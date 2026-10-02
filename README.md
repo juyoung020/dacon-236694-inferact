@@ -2,7 +2,7 @@
 
 **2026 AI·SW중심대학 디지털 경진대회 AI부문 「AI Agent 행동(Action) 의사결정 예측 챌린지」** (DACON, 2026.07)  
 [🏆 최종 리더보드 (Private)](https://dacon.io/competitions/official/236694/leaderboard)  
-**335팀 중 27위 · Team InferAct** · 최종(Private) Macro-F1 **0.79344** (1위 0.79878)
+**269팀 중 27위 · Team InferAct** · 최종(Private) Macro-F1 **0.79344** (1위 0.79878)
 
 AI 코딩 에이전트 세션의 한 시점(사용자 발화, 직전 대화·행동 이력, 세션 메타정보)을 보고
 에이전트가 **다음에 할 행동을 14개 중 하나로 예측**하는 문제입니다.
