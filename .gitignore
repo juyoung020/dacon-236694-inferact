@@ -1,0 +1,46 @@
+# ===== 백업 디렉토리 전체 (활성 코드베이스만 올림) =====
+**/*_backup/
+**/*_champ/
+work/onto_v6_backup/
+work/onto/v7_ft_backup/
+work/onto/e5_full_champ/
+
+# ===== 모델·토크나이저·캐시 (어디에 있든) =====
+**/hf_cache/
+**/e5/
+**/e5_ft/
+**/e5_full/
+**/tokenizer.json
+**/*.safetensors
+**/*.model
+work/venv/
+work/venv311/
+.venv/
+**/__pycache__/
+*.pyc
+
+# ===== 아티팩트·바이너리 =====
+*.zip
+*.joblib
+*.pkl
+*.pkl.*
+*.prevconfig
+*.hold
+*.premeta
+*.preftmeta
+*_basemeta*
+**/e5_full_basemeta/
+*.npz
+*.pt
+*.log
+work/onto/mock/
+work/onto/mock_*/
+work/onto/submit/
+baseline_submit/
+
+# ===== 대회 데이터 (재배포 금지 + 100MB 초과) =====
+data/
+**/data/
+
+# ===== 기타 생성물 =====
+**/graph.pkl

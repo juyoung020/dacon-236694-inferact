@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이콘 대회 핵심 튜토리얼 — AI 에이전트 다음행동 예측</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<style>
+  :root{
+    --bg:#0f1220; --bg2:#151a2e; --card:#1b2138; --card2:#20273f;
+    --text:#e7e9f3; --muted:#9aa3c0; --line:#2b3350;
+    --accent:#7c8cff; --accent2:#5eead4; --warn:#fbbf24; --danger:#fb7185; --ok:#34d399;
+    --code:#0c0f1c;
+    --maxw:900px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:linear-gradient(180deg,#0f1220,#0b0e19 60%);
+    color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7; font-size:16px; -webkit-font-smoothing:antialiased;
+  }
+  /* progress bar */
+  #progress{position:fixed; top:0; left:0; height:4px; width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2)); z-index:999; transition:width .1s}
+  /* top bar */
+  header.top{position:sticky; top:0; z-index:50; backdrop-filter:blur(10px);
+    background:rgba(15,18,32,.82); border-bottom:1px solid var(--line)}
+  .topwrap{max-width:var(--maxw); margin:0 auto; padding:12px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+  .brand{font-weight:800; letter-spacing:-.02em}
+  .brand small{display:block; font-weight:500; color:var(--muted); font-size:12px}
+  nav.chips{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap}
+  nav.chips a{font-size:12.5px; color:var(--muted); text-decoration:none; padding:5px 10px;
+    border:1px solid var(--line); border-radius:999px; transition:.15s; white-space:nowrap}
+  nav.chips a:hover{color:#fff; border-color:var(--accent); background:rgba(124,140,255,.12)}
+  /* layout */
+  main{max-width:var(--maxw); margin:0 auto; padding:0 20px 120px}
+  section{padding:34px 0; border-top:1px solid var(--line)}
+  section:first-of-type{border-top:none}
+  h1{font-size:30px; line-height:1.25; margin:26px 0 8px; letter-spacing:-.02em}
+  h2{font-size:23px; margin:6px 0 14px; letter-spacing:-.01em; display:flex; gap:10px; align-items:baseline}
+  h2 .n{color:var(--accent); font-size:15px; font-weight:800; border:1px solid var(--accent);
+    border-radius:8px; padding:2px 8px; flex:none}
+  h3{font-size:17.5px; margin:22px 0 8px; color:#cdd3f0}
+  p,li{color:var(--text)}
+  .lead{color:var(--muted); font-size:16px}
+  .muted{color:var(--muted)}
+  strong{color:#fff}
+  code{background:#232a45; color:#c9d3ff; padding:1.5px 6px; border-radius:6px; font-size:13.5px;
+    font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  pre{margin:14px 0; border-radius:12px; overflow:auto; border:1px solid var(--line); background:var(--code)}
+  pre code{display:block; background:transparent; padding:16px 18px; font-size:13px; line-height:1.6; color:#e7e9f3}
+  a{color:var(--accent)}
+  /* hero */
+  .hero{padding:20px 0 8px}
+  .badge{display:inline-block; font-size:12.5px; color:var(--accent2); border:1px solid var(--accent2);
+    border-radius:999px; padding:4px 12px; margin-bottom:10px}
+  /* cards / callouts */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px}
+  .callout{border-radius:12px; padding:14px 16px; margin:16px 0; border:1px solid var(--line);
+    background:var(--card2); border-left:4px solid var(--accent)}
+  .callout .h{font-weight:700; margin-bottom:6px}
+  .callout.tip{border-left-color:var(--accent2)} .callout.tip .h{color:var(--accent2)}
+  .callout.warn{border-left-color:var(--warn)} .callout.warn .h{color:var(--warn)}
+  .callout.danger{border-left-color:var(--danger)} .callout.danger .h{color:var(--danger)}
+  .callout.ok{border-left-color:var(--ok)} .callout.ok .h{color:var(--ok)}
+  /* tables */
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14.5px}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--accent2); font-weight:700; background:rgba(94,234,212,.05)}
+  tr:hover td{background:rgba(124,140,255,.05)}
+  td.r,th.r{text-align:right}
+  /* summary table emphasis */
+  .sumcard{background:linear-gradient(160deg,#1b2138,#20273f); border:1px solid var(--line);
+    border-radius:16px; padding:6px 18px 14px}
+  /* mermaid */
+  .mermaid{background:#0c0f1c; border:1px solid var(--line); border-radius:12px; padding:16px; margin:16px 0; text-align:center}
+  /* class list */
+  ul.tight{margin:8px 0; padding-left:20px}
+  ul.tight li{margin:4px 0}
+  /* pill row */
+  .pills{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0}
+  .pill{font-size:13px; background:#232a45; border:1px solid var(--line); border-radius:999px; padding:5px 12px; color:#cdd3f0}
+  .pill b{color:#fff}
+  /* step block (action plan) */
+  .step{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px 16px; margin:14px 0;
+    border-left:4px solid var(--accent)}
+  .step .st{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+  .step .num{flex:none; width:30px; height:30px; border-radius:9px; display:grid; place-items:center;
+    font-weight:800; font-size:15px; color:#0b0e19; background:linear-gradient(135deg,var(--accent),var(--accent2))}
+  .step .ttl{font-weight:800; font-size:16.5px; color:#eef1ff}
+  .step .row{display:grid; grid-template-columns:64px 1fr; gap:6px 10px; margin:5px 0}
+  @media(max-width:560px){.step .row{grid-template-columns:52px 1fr}}
+  .step .tag{font-size:12.5px; font-weight:700; color:var(--accent2); padding-top:2px}
+  .step .tag.why{color:var(--accent)} .step .tag.warn{color:var(--warn)}
+  /* back to top */
+  #toTop{position:fixed; right:22px; bottom:22px; z-index:60; display:none;
+    width:46px; height:46px; border-radius:50%; border:1px solid var(--line);
+    background:var(--accent); color:#0b0e19; font-size:20px; cursor:pointer; box-shadow:0 6px 24px rgba(0,0,0,.4)}
+  footer{max-width:var(--maxw); margin:0 auto; padding:30px 20px 60px; color:var(--muted); font-size:13.5px; border-top:1px solid var(--line)}
+  .kbd{font-size:12px; color:var(--muted)}
+  hr.soft{border:none; border-top:1px dashed var(--line); margin:20px 0}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="top">
+  <div class="topwrap">
+    <div class="brand">🎓 데이콘 대회 핵심<small>AI 에이전트 다음행동 예측 · Macro-F1</small></div>
+    <nav class="chips">
+      <a href="#overview">개요</a>
+      <a href="#data">데이터</a>
+      <a href="#concept">핵심개념</a>
+      <a href="#plan">액션플랜</a>
+      <a href="#strategy">전략</a>
+      <a href="#pitfall">함정</a>
+      <a href="#checklist">체크리스트</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge">대회용 핵심 지식 · 무엇을 해야 하나 중심</span>
+    <h1>AI 코딩 에이전트의 <span style="color:var(--accent)">다음 행동</span>을 맞혀라</h1>
+    <p class="lead">세션의 한 순간을 보고, 에이전트가 다음에 취할 행동을 <strong>14개 중 1개</strong>로 예측하는 다중분류 문제. 이 문서는 코드 대신 <strong>"무엇을 · 왜 · 어떻게"</strong> 를 순서대로 정리한 개념·액션 플랜임.</p>
+
+    <div class="sumcard">
+      <table>
+        <tr><th style="width:130px">뭘 맞힘</th><td>AI 에이전트의 <strong>다음 행동 1개</strong> (14개 클래스)</td></tr>
+        <tr><th>점수</th><td><strong>Macro-F1</strong> — 소수 클래스도 똑같이 중요</td></tr>
+        <tr><th>제출</th><td>코드+모델 <strong>zip</strong> / <strong>오프라인 · 추론 10분 · 1GB · T4 GPU</strong></td></tr>
+        <tr><th>주력 무기</th><td>피처(history·meta) + <strong>LightGBM</strong> + <strong>GroupKFold</strong></td></tr>
+        <tr><th>점수 올리기</th><td>불균형 대응(<code>class_weight</code>) + <strong>threshold 튜닝</strong> + 앙상블</td></tr>
+        <tr><th>안 씀</th><td>LangChain / QLoRA / 대형 LLM <span class="muted">(제약·불필요)</span></td></tr>
+      </table>
+    </div>
+    <div class="callout tip">
+      <div class="h">🧭 이 문서 읽는 법</div>
+      1~3장은 <b>개념</b>(뭘 맞히나, 데이터가 뭐냐, 꼭 아는 용어). <b>4장이 핵심</b> — 대회 완주까지 <b>단계별 할 일</b>을 "① 무엇을 ② 왜 ③ 주의점"으로 정리함. 5~7장은 점수 올리기·함정·체크리스트. 위→아래로 그냥 쭉 읽으면 됨.
+    </div>
+  </div>
+
+  <!-- 1. OVERVIEW -->
+  <section id="overview">
+    <h2><span class="n">1</span> 대회 한눈에</h2>
+    <div class="callout tip">
+      <div class="h">⚠️ 오해부터 풀기</div>
+      이 대회는 <strong>에이전트를 만드는 게 아님</strong>. 이미 찍힌 로그로 <strong>분류기를 학습</strong>하는 순수 지도학습임.
+      그래서 <b>LangChain/LangGraph</b>(에이전트 프레임워크)도, <b>QLoRA·대형 LLM</b>도 안 씀 — 제약에 막히고 불필요함. 정석은 <strong>고전 ML + 작은 인코더</strong>.
+    </div>
+    <h3>실행 제약 — 못 지키면 0점</h3>
+    <table>
+      <tr><th>제약</th><th>값</th></tr>
+      <tr><td>추론 시간</td><td>≤ <strong>10분</strong> (실제 평가셋 30,000건)</td></tr>
+      <tr><td>패키지 설치</td><td>≤ <strong>10분</strong></td></tr>
+      <tr><td>제출 용량</td><td>≤ <strong>1GB</strong></td></tr>
+      <tr><td>인터넷</td><td><strong>오프라인</strong> — 모델·라이브러리 다 zip에</td></tr>
+      <tr><td>하드웨어</td><td><strong>T4 GPU 16GB / 3 vCPU / 12GB RAM</strong></td></tr>
+    </table>
+    <p class="muted">제출 형식은 예측 CSV가 아니라 <b>추론 코드+모델 zip</b>임 → 서버가 오프라인으로 직접 돌림. 그래서 "어떤 모델을 쓰냐"만큼 "제약 안에서 돌게 만드느냐"가 중요.</p>
+
+    <div class="callout ok">
+      <div class="h">🎯 출제 의도 — 왜 "작은 모델"이 정답인가 <span class="muted" style="font-weight:400">(대회안내 '주제선정 배경'에서 캔 힌트)</span></div>
+      주최측이 원하는 건 <strong>"LLM을 부르기 전에 다음 행동을 빠르게 결정하는 경량·고속 라우터(router)"</strong>임. 실제 에이전트는 무거운 LLM 앞에 <b>가벼운 의사결정 모델</b>을 둬 행동을 먼저 분기하는데, 이 대회가 바로 그 모델을 만드는 것.
+      <ul class="tight" style="margin-top:8px">
+        <li><b>제약(10분·1GB·오프라인·T4)은 임의가 아님</b> — 실시간 라우터를 흉내 낸 것. 대형 LLM은 <b>출제 의도 자체에 어긋남</b> → 작은 모델이 정답.</li>
+        <li>주최측이 <b>"정확성뿐 아니라 속도·효율도 핵심"</b>이라 못 박음 → 경량화할수록 앙상블 여유↑.</li>
+        <li>정답 신호는 <b>세션 상태(메타·이력)</b> 안에 있음 = <b>LLM 없이 뽑는 값싼 피처</b>가 핵심.</li>
+      </ul>
+    </div>
+
+    <p class="muted">일정: 예선 07.01~07.15 · 예선평가 07.17 · 예선발표 07.27 · 본선 08.11</p>
+  </section>
+
+  <!-- 2. DATA -->
+  <section id="data">
+    <h2><span class="n">2</span> 데이터가 뭐냐</h2>
+    <p>한 샘플(JSON 한 줄)은 세 부분으로 구성됨. <strong>이 직후에 에이전트가 한 행동이 정답</strong>임.</p>
+    <table>
+      <tr><th style="width:170px">필드</th><th>뜻</th></tr>
+      <tr><td><code>current_prompt</code></td><td>방금 들어온 <strong>사용자 발화</strong> — 가장 강한 신호</td></tr>
+      <tr><td><code>history</code></td><td>직전까지 <code>user ↔ action</code> 교대 이력 (직전 action·result_summary가 핵심)</td></tr>
+      <tr><td><code>session_meta</code></td><td>요금제·잔여토큰·turn_index·<code>git_dirty</code>·<code>last_ci_status</code>·<code>open_files</code>·언어비율</td></tr>
+    </table>
+
+    <div class="callout tip">
+      <div class="h">🎯 정답을 결정하는 강한 신호 3개</div>
+      ① <b>current_prompt</b> ("테스트 돌려봐" → <code>run_tests</code>) ·
+      ② <b>직전 action + result_summary</b> ("CI failed" → <code>edit_file</code>/<code>run_tests</code>) ·
+      ③ <b>session_meta 상태</b> (<code>git_dirty</code>, <code>last_ci_status</code>) →
+      이 셋을 피처로 살리는 게 4장 액션 플랜의 뼈대임.
+    </div>
+
+    <h3>입력 → 정답 흐름</h3>
+    <pre class="mermaid">
+flowchart LR
+    M[session_meta 상태] --> MODEL{{분류 모델}}
+    H[history 이력] --> MODEL
+    P[current_prompt 강한신호] ==> MODEL
+    MODEL --> OUT[14개 action 중 1개 예: run_tests]
+    </pre>
+
+    <h3>14개 클래스 + 학습셋 분포 (총 70,000)</h3>
+    <table>
+      <tr><th>그룹</th><th>action</th><th class="r">개수</th><th class="r">비율</th></tr>
+      <tr><td>수정</td><td><code>edit_file</code></td><td class="r">11,171</td><td class="r">16.0%</td></tr>
+      <tr><td>탐색</td><td><code>grep_search</code></td><td class="r">9,912</td><td class="r">14.2%</td></tr>
+      <tr><td>탐색</td><td><code>read_file</code></td><td class="r">9,257</td><td class="r">13.2%</td></tr>
+      <tr><td>탐색</td><td><code>glob_pattern</code></td><td class="r">5,284</td><td class="r">7.5%</td></tr>
+      <tr><td>대화</td><td><code>respond_only</code></td><td class="r">5,178</td><td class="r">7.4%</td></tr>
+      <tr><td>실행</td><td><code>run_bash</code></td><td class="r">5,068</td><td class="r">7.2%</td></tr>
+      <tr><td>수정</td><td><code>apply_patch</code></td><td class="r">4,823</td><td class="r">6.9%</td></tr>
+      <tr><td>실행</td><td><code>run_tests</code></td><td class="r">4,561</td><td class="r">6.5%</td></tr>
+      <tr><td>탐색</td><td><code>list_directory</code></td><td class="r">4,329</td><td class="r">6.2%</td></tr>
+      <tr><td>대화</td><td><code>ask_user</code></td><td class="r">2,701</td><td class="r">3.9%</td></tr>
+      <tr><td>대화</td><td><code>plan_task</code></td><td class="r">2,679</td><td class="r">3.8%</td></tr>
+      <tr><td>실행</td><td><code>lint_or_typecheck</code></td><td class="r">2,283</td><td class="r">3.3%</td></tr>
+      <tr><td>수정</td><td><code>write_file</code></td><td class="r">1,481</td><td class="r">2.1%</td></tr>
+      <tr><td>탐색</td><td><code>web_search</code></td><td class="r">1,273</td><td class="r">1.8%</td></tr>
+    </table>
+    <div class="callout warn">
+      <div class="h">불균형 8.8배 — 이게 대회 성격을 정함</div>
+      <code>edit_file</code>(11,171) vs <code>web_search</code>(1,273). <strong>Macro-F1은 작은 클래스도 1/14 동등 비중</strong> → 소수 클래스 하나 놓치면 점수 크게 깎임. "다수만 잘 맞히기"로는 절대 못 이김.
+    </div>
+  </section>
+
+  <!-- 3. CONCEPTS -->
+  <section id="concept">
+    <h2><span class="n">3</span> 꼭 아는 핵심 개념</h2>
+    <p class="lead">대회에 직접 쓰이는 것만 추림. 각 개념을 "뭐임 → 왜 → 이 대회 적용" 순으로 쉽게. 수식은 최소.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3 style="margin-top:4px">📝 TF-IDF (텍스트→숫자)</h3>
+        <p class="muted">모델은 숫자만 먹음. TF-IDF는 <strong>이 문서에서만 특별히 자주 나오는 단어</strong>에 높은 점수를 줌. "the"처럼 흔하면 자동 감점.</p>
+        <p><b>이 대회</b>: 사용자 발화를 <b>word(1~2) + char(3~5) n-gram</b>으로 숫자화. 코드·파일명(<code>run_tests</code>, <code>.toml</code>)이 많아 글자 단위(char)가 잘 먹음.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">🧩 피처 엔지니어링</h3>
+        <p class="muted">원본에서 모델이 배우기 좋은 새 변수를 사람이 만들어 주는 것. <strong>여기가 진짜 점수</strong>.</p>
+        <p><b>이 대회</b>: 베이스라인은 <code>current_prompt</code>만 씀 → <b>직전 action, result_summary(성공/실패), git_dirty, CI상태, 턴수</b> 같은 history·meta 신호를 피처로 살리면 바로 앞섬.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">⚖️ Macro-F1 &amp; 불균형</h3>
+        <p class="muted">클래스별 F1을 <strong>단순 평균</strong>(1/14씩 동등). 소수 클래스도 다수와 똑같이 한 표.</p>
+        <p><b>대응</b>: <code>class_weight='balanced'</code>(소수 클래스 오차에 큰 벌점) · <b>threshold 튜닝</b>. 이게 없으면 소수 클래스를 다 틀려 점수가 낮음.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">🌳 LightGBM</h3>
+        <p class="muted">결정트리를 오차 보정하며 쌓는 부스팅 모델. 표(수치+범주) 피처에 강하고 빠름 → <b>CPU로도 10분 내</b>. 이 대회 메인 무기.</p>
+        <p class="muted">빠른 비법: leaf-wise 성장 · GOSS · EFB. 튜닝 적어도 성능 좋아 가성비 1등.</p>
+      </div>
+    </div>
+
+    <h3>🚨 세션 누수 &amp; GroupKFold — 우승의 90%</h3>
+    <p>한 세션(<code>sess_..._028750</code>)은 여러 <code>step</code>으로 쪼개져 있고 서로 매우 비슷함. 랜덤 K-fold를 쓰면 같은 세션이 train/val에 섞여 <strong>모델이 세션을 통째로 암기</strong> → 검증 점수가 가짜로 높게 나옴(일반화 아님). 반드시 <strong>같은 세션은 통째로 한쪽 폴드</strong>에 넣어야 함.</p>
+    <pre class="mermaid">
+flowchart TB
+    subgraph BAD[랜덤 KFold 세션 누수 X]
+        A1[세션A step1,3,5] --> TR1[Train]
+        A2[세션A step2,4] --> VA1[Val]
+    end
+    subgraph GOOD[GroupKFold 세션 통째로 O]
+        B1[세션A 전체] --> TR2[Train]
+        B2[세션B 전체] --> VA2[Val]
+    end
+    </pre>
+    <p class="muted">세션키 = id에서 <code>-step</code> 앞부분. 불균형+그룹 둘 다 잡으려면 <b>StratifiedGroupKFold</b>(그룹 유지 + 클래스 분포 균등)가 최적.</p>
+
+    <h3>🎚️ threshold 튜닝 — 저비용 점수 상승</h3>
+    <p>확률 최댓값(argmax)만 쓰면 소수 클래스는 확률이 늘 낮아 거의 안 뽑힘. <strong>클래스별 가중치를 곱한 뒤 argmax</strong> 하면 소수 클래스가 뽑히기 쉬워져 macro-F1이 오름 — <b>모델은 그대로라 공짜에 가까움</b>. <span class="muted">단, 소수 클래스 가중치를 너무 키우면 남발(병적 해)해서 오히려 떨어짐 → 검증 데이터에서 신중히.</span></p>
+
+    <div class="callout danger">
+      <div class="h">왜 대형 LLM/QLoRA를 안 쓰나</div>
+      7B는 4bit로도 ≈4GB → <b>1GB 초과</b>, 3만 건 생성추론 → <b>10분 초과</b>. 게다가 과제는 <b>분류</b>라 생성형이 불필요함. <code>deberta-v3-base</code> 같은 <b>작은 인코더</b>(수백MB)면 다 통과하고 정확도도 안정적.
+    </div>
+
+    <h3>🧰 손에 쥘 도구(라이브러리)</h3>
+    <div class="pills">
+      <span class="pill"><b>pandas·numpy</b> 표·배열</span>
+      <span class="pill"><b>scikit-learn</b> TF-IDF·CV·지표</span>
+      <span class="pill"><b>scipy</b> 희소행렬 결합</span>
+      <span class="pill"><b>lightgbm</b> 메인 모델</span>
+      <span class="pill"><b>joblib</b> 모델 저장</span>
+    </div>
+    <p class="muted">선택(상위권): <b>transformers·torch</b>(DeBERTa) · <b>onnxruntime</b>(추론 가속) · <b>xgboost/catboost</b>(앙상블).</p>
+  </section>
+
+  <!-- 4. ACTION PLAN -->
+  <section id="plan">
+    <h2><span class="n">4</span> 무엇을 해야 하나 — 단계별 액션 플랜</h2>
+    <p class="lead">대회 완주까지의 순서. 각 단계는 <b>① 무엇을 · ② 왜 · ③ 주의점</b>으로. 이 흐름만 따라가면 제출까지 감.</p>
+
+    <pre class="mermaid">
+flowchart TD
+    A[1 데이터 열어보기 EDA] --> B[2 피처 만들기 features.py]
+    B --> C[3 텍스트 숫자화 TF-IDF + 표 결합]
+    C --> D[4 검증 설계 StratifiedGroupKFold]
+    D --> E[5 학습 LightGBM]
+    E --> F[6 점수 확인 OOF Macro-F1]
+    F --> G[7 threshold 튜닝]
+    G --> H[8 전체 재학습 bundle 저장]
+    H --> I[9 오프라인 리허설]
+    I --> J[10 zip 제출]
+    </pre>
+
+    <div class="callout warn">
+      <div class="h">⚠️ 관통하는 대원칙 하나</div>
+      피처 만드는 함수는 <strong><code>features.py</code> 한 곳</strong>에 두고 <b>학습과 제출이 똑같이 불러 쓰게</b> 함. 복붙 두 벌을 두면 전처리가 어긋나 점수가 무너짐. (아래 2·8·9단계 전부 이걸 전제로 함)
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">1</span><span class="ttl">데이터를 직접 열어본다 (EDA)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>표만 보지 말고 Day 1에 직접 로드해서 <b>클래스 분포·history 길이·세션당 step 수·빈 프롬프트 비율</b>을 눈으로 확인.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>불균형이 얼마나 심한지, 이력이 비어 피처를 못 쓰는 샘플이 얼마나 되는지 알아야 이후 피처·검증 설계가 쉬워짐.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span><code>직전 action → 정답</code> 분포표를 만들어 보면 강한 규칙(예: <code>apply_patch</code> 다음 <code>run_tests</code>)이 바로 보임 → 그게 곧 강피처.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">2</span><span class="ttl">피처를 만든다 (history·meta 살리기)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>한 샘플 → 숫자·범주 변수로 바꾸는 함수를 <code>features.py</code>에 작성. <b>텍스트</b>(current_prompt+과거 user 발화), <b>직전 action</b>, <b>result_summary의 성공/실패</b>, <code>git_dirty</code>·<code>last_ci_status</code>·<code>turn_index</code>, action별 등장 횟수, 프롬프트 키워드 유무 등.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>베이스라인은 <code>current_prompt</code>만 씀. history·meta를 피처로 살리는 순간 바로 앞섬 — <b>여기가 점수의 핵심</b>.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>세션키(<code>-step</code> 앞부분)도 이때 같이 뽑아 둠 — 4단계 검증에서 그룹으로 씀.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">3</span><span class="ttl">텍스트를 숫자로 바꾸고 표와 합친다</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>텍스트는 <b>TF-IDF(word 1~2 + char 3~5)</b>로, 범주는 one-hot, 수치는 그대로 → <b>가로로 이어붙여</b>(hstack) 하나의 입력 행렬로.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>모델은 숫자만 먹음. 텍스트 신호(무엇을 시켰나)와 표 신호(상태가 어떤가)를 한 판에 모아야 함께 학습됨.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>TF-IDF는 <b>학습 fold에서만 <code>fit</code></b>하고 검증엔 <code>transform</code>만. 전체로 fit하면 누수.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">4</span><span class="ttl">검증을 제대로 설계한다 (세션 누수 차단)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span><b>StratifiedGroupKFold(5분할)</b>로 나눔. 그룹 = 세션키 → 같은 세션은 통째로 한쪽에만.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>랜덤 분할이면 같은 세션이 train/val에 섞여 <b>점수가 가짜로 뻥튀기</b>됨. 여기서 실패하면 이후 개선이 전부 착시임. <b>우승의 90%</b>.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>CV 점수와 리더보드 점수를 늘 같이 기록 → 벌어지면 누수 의심.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">5</span><span class="ttl">모델을 학습한다 (LightGBM)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>폴드마다 LightGBM 학습. <code>class_weight='balanced'</code>(불균형), <code>early stopping</code>(과적합·시간 낭비 방지), <code>random_state</code>(재현성) 꼭 챙김.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>표+희소 텍스트 피처에 강하고 빠름 → 제약(10분) 안에서 안정적으로 좋은 점수.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>학습률은 낮추고 트리 수는 늘리되 early stopping으로 자동 멈춤 — 이게 정석.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">6</span><span class="ttl">점수를 확인한다 (OOF Macro-F1)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>각 폴드의 검증 예측(OOF)을 모아 <b>Macro-F1</b>을 측정하고, 클래스별 리포트로 <b>어떤 클래스가 약한지</b> 확인.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>제출 안 하고도 내 개선이 진짜인지 판별하는 기준. 약한 소수 클래스가 곧 점수 병목.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>어떤 클래스끼리 헷갈리는지(<code>edit_file</code>↔<code>apply_patch</code> 등) 보고 그 경계를 살리는 피처를 2단계에 추가.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">7</span><span class="ttl">threshold를 튜닝한다 (공짜 점수)</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>OOF 확률에 <b>클래스별 가중치</b>를 곱해 argmax → macro-F1이 최대가 되게 가중치를 탐색(한 클래스씩 조정).</span></div>
+      <div class="row"><span class="tag why">왜</span><span>소수 클래스가 잘 안 뽑히는 걸 완화 → 모델 재학습 없이 macro-F1을 올림(보통 +0.005~0.02).</span></div>
+      <div class="row"><span class="tag warn">주의</span><span><code>balanced</code>를 이미 썼으면 이중 보정이 될 수 있음 → 가중치를 오히려 1보다 낮춰야 할 수도. <b>반드시 OOF에서 실측</b>.</span></div>
+    </div>
+
+    <div class="step" style="border-left-color:var(--ok)">
+      <div class="st"><span class="num" style="background:linear-gradient(135deg,var(--ok),var(--accent2))">8</span><span class="ttl">⭐ 전체로 재학습해 bundle을 저장한다</span></div>
+      <div class="row"><span class="tag">무엇을</span><span>5단계는 <b>점수 확인용</b>일 뿐. 실제 제출하려면 <b>전체 train으로 다시 학습</b>해서 변환기(TF-IDF·one-hot)·모델·클래스가중치를 한 파일(<code>bundle.pkl</code>)로 저장.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>이걸 안 하면 <b>제출할 모델 파일 자체가 없음</b> → 제출 불가. 가장 흔히 빠뜨리는 치명적 단계.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>트리 수는 5단계 각 폴드의 best iteration 평균쯤으로 고정.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">9</span><span class="ttl">오프라인 리허설을 한다</span></div>
+      <div class="row"><span class="tag">무엇을</span><span><b>인터넷을 끄고</b> <code>model/</code>·<code>features.py</code>·<code>script.py</code>만 있는 폴더에서 test 5건으로 실행 → <code>submission.csv</code>가 생기는지 확인.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>채점 서버는 인터넷이 없음. 여기서 <code>ModuleNotFoundError</code>·다운로드 시도가 있으면 실전 0점.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span>추론이 <b>10분·1GB</b> 안에 드는지 시간·용량도 이때 측정. <code>requirements.txt</code>는 학습 환경 버전으로 고정.</span></div>
+    </div>
+
+    <div class="step">
+      <div class="st"><span class="num">10</span><span class="ttl">zip으로 묶어 제출한다</span></div>
+      <div class="row"><span class="tag">무엇을</span><span><code>model</code> + <code>features.py</code> + <code>script.py</code> + <code>requirements.txt</code>를 zip으로 묶어 제출.</span></div>
+      <div class="row"><span class="tag why">왜</span><span>서버가 zip을 풀고 <code>requirements.txt</code>만 설치한 뒤 <code>script.py</code>를 돌려 채점함.</span></div>
+      <div class="row"><span class="tag warn">주의</span><span><code>features.py</code> 빠뜨리면 즉시 실패. 제출 CSV는 <code>id,action</code> 컬럼 + sample과 같은 id 순서.</span></div>
+    </div>
+
+    <div class="callout danger">
+      <div class="h">📋 채점 서버가 실제로 하는 일 <span class="muted" style="font-weight:400">(공식 코드 제출 가이드에서 캔 힌트)</span></div>
+      순서: <b>zip 풀기 → <code>data/</code>·<code>output/</code> 생성 → <code>pip install -r requirements.txt</code> → <code>python script.py</code> → <code>output/submission.csv</code> 확인.</b>
+      <ul class="tight" style="margin-top:8px">
+        <li><code>script.py</code>·<code>requirements.txt</code>는 <b>이름 정확히</b> 일치해야 함. <b>zip 이름에 공백·한글 금지.</b></li>
+        <li><code>requirements.txt</code>엔 <b>추가로 필요한 것만</b> — 서버에 이미 깔린 패키지는 빼도 됨('평가' 탭 확인). 다 넣으면 설치 충돌·시간초과 위험.</li>
+        <li><b>런타임 에러(크래시·csv 미생성·시간초과)는 제출 횟수 차감</b> ← 오프라인 리허설이 필수인 이유. (셋업 에러는 차감 없음)</li>
+        <li>모델·토크나이저·config 전부 <code>model/</code>에 미리 저장 — <code>from_pretrained()</code> 온라인 다운로드 금지.</li>
+        <li>⚠️ 가이드 체크리스트엔 <code>model/</code>·<code>script.py</code>·<code>requirements.txt</code>만 명시 → <b>가장 안전한 건 <code>make_features</code>를 <code>script.py</code> 안에 직접 넣기</b>(또는 <code>features.py</code>를 넣되 리허설로 반드시 확인).</li>
+      </ul>
+    </div>
+
+    <div class="callout ok">
+      <div class="h">✅ 여기까지 = 완주</div>
+      1~10을 한 바퀴 돌면 리더보드에 점수가 찍힘. 그 다음은 5장 전략으로 <b>같은 뼈대 위에</b> 피처·모델을 얹어 점수를 올리면 됨.
+    </div>
+  </section>
+
+  <!-- 5. STRATEGY -->
+  <section id="strategy">
+    <h2><span class="n">5</span> 점수 올리는 전략</h2>
+    <p class="lead">완주 뼈대(4장) 위에 단계별로 얹음. 매 단계 <b>제출해서 리더보드로 실제 확인</b>하는 게 중요.</p>
+    <table>
+      <tr><th style="width:120px">단계</th><th>할 것</th></tr>
+      <tr><td>🥉 Day 1</td><td>베이스라인 그대로 제출 → 파이프라인이 도는지 확인</td></tr>
+      <tr><td>🥈 Day 2~4</td><td>history·meta 피처 + StratifiedGroupKFold + <code>class_weight</code> + threshold → <b>중상위권 (가성비 최고 구간)</b></td></tr>
+      <tr><td>🥇 Day 5~9</td><td>DeBERTa-v3 파인튜닝 (fp16, max_length≈256, 오프라인 번들)</td></tr>
+      <tr><td>🏆 Day 10~</td><td>LightGBM+DeBERTa 가중 앙상블 → threshold 재튜닝</td></tr>
+    </table>
+
+    <h3>상위권을 가르는 3가지</h3>
+    <div class="grid">
+      <div class="card">
+        <h3 style="margin-top:4px">🔍 고급 피처</h3>
+        <p class="muted"><b>전이확률</b>(직전 action일 때 다음 action 확률), <b>result_summary 파싱</b>(테스트 수·수정 파일 수·+/- 줄수), 프롬프트↔<code>open_files</code> 상호작용, TF-IDF→SVD 압축, (오프라인 번들) 문장 임베딩. 숨은 규칙 하나가 모델 여러 개보다 나음.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">🧠 작은 인코더</h3>
+        <p class="muted"><code>deberta-v3-base</code>를 14클래스로 파인튜닝. 표 정보를 특수토큰으로 문장에 넣어 함께 학습하면 강력. 대형 LLM은 제약에 막히니 <b>base급</b>으로.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">🎛️ 다양성 앙상블</h3>
+        <p class="muted">LightGBM(표) + DeBERTa(텍스트) 확률을 <b>가중 평균</b> → threshold 재튜닝. 성능 비슷해도 <b>서로 다르게 틀리는</b> 모델을 섞어야 이득 큼.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:4px">📏 신뢰 CV</h3>
+        <p class="muted">StratifiedGroupKFold + (여유되면) adversarial validation으로 train/test 분포 이동 점검. public 리더보드 과적합 경계 — 본선은 비공개라 <b>CV를 믿어야</b> 함.</p>
+      </div>
+    </div>
+
+    <div class="callout ok">
+      <div class="h">🏆 우승 공식 한 줄</div>
+      신뢰 CV(StratifiedGroupKFold) + 전이·요약파싱 <b>고급 피처</b> + (AWP 넣은) DeBERTa &amp; LightGBM <b>다양성 앙상블</b> + macro-F1 <b>threshold 최적화</b> + 오프라인 증류로 10분 안에 우겨넣기.
+    </div>
+    <p class="muted">시험기간이면 Day 1~4(LightGBM 트랙)만 제대로 해도 충분히 승부됨. DeBERTa·앙상블은 시간 남을 때.</p>
+  </section>
+
+  <!-- 6. PITFALLS -->
+  <section id="pitfall">
+    <h2><span class="n">6</span> 흔한 함정 (순위 뒤집힘)</h2>
+    <ul class="tight">
+      <li><b>세션 누수</b> — 랜덤 KFold 쓰면 CV가 가짜로 뻥튀기 → 반드시 GroupKFold(세션키).</li>
+      <li><b>최종 재학습·저장 빼먹음</b> — CV만 돌리고 <code>bundle.pkl</code>을 안 만들면 제출할 파일이 없음(4장 8단계 필수).</li>
+      <li><b>전처리 불일치</b> — 피처 함수를 <code>features.py</code>로 분리해 학습·제출이 공용으로 쓰게.</li>
+      <li><b>오프라인 잊음</b> — 서버는 인터넷 없음. 모델·라이브러리 다 zip에.</li>
+      <li><b>10분/1GB 초과</b> — 무거운 모델 탈락. 미리 시간·용량 측정.</li>
+      <li><b><code>class_weight</code> 빼먹기</b> — 소수 클래스 다 틀려 macro-F1이 낮음.</li>
+      <li><b>제출 CSV 형식</b> — <code>id,action</code> 컬럼 + sample과 같은 id 순서.</li>
+      <li><b>CV↔리더보드 괴리</b> — CV만 믿지 말고 실제 제출로 검증. 벌어지면 누수 의심.</li>
+    </ul>
+  </section>
+
+  <!-- 7. CHECKLIST -->
+  <section id="checklist">
+    <h2><span class="n">7</span> 최종 체크리스트</h2>
+    <div class="card">
+      <ul class="tight">
+        <li>☐ <code>train.jsonl</code> 로드 + EDA + <code>session_key</code> 그룹</li>
+        <li>☐ 피처 함수(<code>features.py</code>로 분리) — history·meta 살리기</li>
+        <li>☐ TF-IDF(word+char) + one-hot + 수치 → 결합</li>
+        <li>☐ StratifiedGroupKFold(5) + LightGBM(<code>class_weight</code>, seed, early stopping)</li>
+        <li>☐ OOF macro-F1 + 클래스별 리포트로 약한 클래스 확인</li>
+        <li>☐ threshold 튜닝으로 추가 상승</li>
+        <li>☐ <b>전체 재학습 → bundle.pkl 저장</b> (⭐필수)</li>
+        <li>☐ 오프라인 리허설(인터넷 끄고 test 5건) → 10분·1GB 확인</li>
+        <li>☐ features.py+script.py+model+requirements → zip 제출</li>
+        <li>☐ (여유) 고급 피처 + DeBERTa 파인튜닝 + 앙상블</li>
+      </ul>
+    </div>
+    <div class="callout tip">
+      <div class="h">📚 더 깊이</div>
+      전체 개념·수식·출처·코드·우승 전략 상세는 옵시디언 노트 <b>「데이콘 대회 완전정복」</b>에 있음. 이 HTML은 <b>개념 + 무엇을 해야 하나</b>에 초점을 둔 실전 요약본.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  데이콘 2026 AI·SW중심대학 디지털 경진대회(AI부문) · 핵심 튜토리얼 ·
+  프로젝트 폴더 <code>Desktop/dacon-agent-action-2026/</code>
+</footer>
+
+<button id="toTop" title="맨 위로">↑</button>
+
+<!-- highlight.js -->
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script>try{hljs.highlightAll();}catch(e){}</script>
+<!-- mermaid -->
+<script type="module">
+  try{
+    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    m.default.initialize({startOnLoad:true, theme:'dark', securityLevel:'loose',
+      themeVariables:{fontSize:'14px'}});
+  }catch(e){}
+</script>
+<!-- progress + back to top -->
+<script>
+  const bar = document.getElementById('progress');
+  const toTop = document.getElementById('toTop');
+  function onScroll(){
+    const h = document.documentElement;
+    const sc = h.scrollTop, max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max>0 ? (sc/max*100) : 0) + '%';
+    toTop.style.display = sc > 500 ? 'block' : 'none';
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  toTop.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+  onScroll();
+</script>
+</body>
+</html>

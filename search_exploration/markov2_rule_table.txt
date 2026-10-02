@@ -1,0 +1,68 @@
+last2_pair | n | argmax | purity | full_dist
+() | 4919 | list_directory | 0.37 | {'read_file': 0.3, 'grep_search': 0.21, 'glob_pattern': 0.12, 'list_directory': 0.37}
+('list_directory',) | 1204 | read_file | 0.41 | {'read_file': 0.41, 'grep_search': 0.31, 'glob_pattern': 0.13, 'list_directory': 0.15}
+('grep_search', 'grep_search') | 849 | glob_pattern | 0.82 | {'read_file': 0.07, 'grep_search': 0.07, 'glob_pattern': 0.82, 'list_directory': 0.04}
+('grep_search', 'glob_pattern') | 695 | glob_pattern | 0.82 | {'read_file': 0.07, 'grep_search': 0.07, 'glob_pattern': 0.82, 'list_directory': 0.05}
+('plan_task',) | 673 | list_directory | 0.43 | {'read_file': 0.31, 'grep_search': 0.19, 'glob_pattern': 0.07, 'list_directory': 0.43}
+('grep_search', 'read_file') | 626 | glob_pattern | 0.76 | {'read_file': 0.13, 'grep_search': 0.07, 'glob_pattern': 0.76, 'list_directory': 0.05}
+('read_file',) | 626 | read_file | 0.47 | {'read_file': 0.47, 'grep_search': 0.46, 'glob_pattern': 0.02, 'list_directory': 0.04}
+('read_file', 'grep_search') | 625 | grep_search | 0.73 | {'read_file': 0.19, 'grep_search': 0.73, 'glob_pattern': 0.04, 'list_directory': 0.04}
+('grep_search',) | 618 | read_file | 0.52 | {'read_file': 0.52, 'grep_search': 0.33, 'glob_pattern': 0.12, 'list_directory': 0.03}
+('edit_file', 'run_tests') | 588 | grep_search | 0.62 | {'read_file': 0.19, 'grep_search': 0.62, 'glob_pattern': 0.11, 'list_directory': 0.08}
+('glob_pattern', 'grep_search') | 543 | read_file | 0.33 | {'read_file': 0.33, 'grep_search': 0.32, 'glob_pattern': 0.31, 'list_directory': 0.03}
+('read_file', 'edit_file') | 541 | grep_search | 0.82 | {'read_file': 0.1, 'grep_search': 0.82, 'glob_pattern': 0.03, 'list_directory': 0.04}
+('glob_pattern', 'glob_pattern') | 505 | grep_search | 0.34 | {'read_file': 0.34, 'grep_search': 0.34, 'glob_pattern': 0.25, 'list_directory': 0.07}
+('list_directory', 'grep_search') | 480 | read_file | 0.85 | {'read_file': 0.85, 'grep_search': 0.07, 'glob_pattern': 0.04, 'list_directory': 0.04}
+('edit_file', 'grep_search') | 479 | grep_search | 0.80 | {'read_file': 0.08, 'grep_search': 0.8, 'glob_pattern': 0.09, 'list_directory': 0.03}
+('read_file', 'read_file') | 477 | grep_search | 0.88 | {'read_file': 0.05, 'grep_search': 0.88, 'glob_pattern': 0.03, 'list_directory': 0.04}
+('grep_search', 'edit_file') | 472 | glob_pattern | 0.83 | {'read_file': 0.07, 'grep_search': 0.05, 'glob_pattern': 0.83, 'list_directory': 0.05}
+('list_directory', 'read_file') | 418 | read_file | 0.84 | {'read_file': 0.84, 'grep_search': 0.1, 'glob_pattern': 0.03, 'list_directory': 0.03}
+('glob_pattern',) | 379 | list_directory | 0.38 | {'read_file': 0.27, 'grep_search': 0.24, 'glob_pattern': 0.11, 'list_directory': 0.38}
+('run_bash',) | 378 | list_directory | 0.41 | {'read_file': 0.31, 'grep_search': 0.19, 'glob_pattern': 0.09, 'list_directory': 0.41}
+('run_bash', 'run_bash') | 343 | read_file | 0.46 | {'read_file': 0.46, 'grep_search': 0.16, 'glob_pattern': 0.12, 'list_directory': 0.25}
+('ask_user',) | 343 | list_directory | 0.40 | {'read_file': 0.29, 'grep_search': 0.19, 'glob_pattern': 0.12, 'list_directory': 0.4}
+('edit_file', 'edit_file') | 330 | grep_search | 0.61 | {'read_file': 0.25, 'grep_search': 0.61, 'glob_pattern': 0.08, 'list_directory': 0.06}
+('read_file', 'glob_pattern') | 318 | grep_search | 0.85 | {'read_file': 0.07, 'grep_search': 0.85, 'glob_pattern': 0.04, 'list_directory': 0.03}
+('edit_file', 'glob_pattern') | 315 | grep_search | 0.75 | {'read_file': 0.11, 'grep_search': 0.75, 'glob_pattern': 0.1, 'list_directory': 0.04}
+('list_directory', 'glob_pattern') | 289 | read_file | 0.50 | {'read_file': 0.5, 'grep_search': 0.3, 'glob_pattern': 0.12, 'list_directory': 0.08}
+('glob_pattern', 'read_file') | 278 | read_file | 0.49 | {'read_file': 0.49, 'grep_search': 0.42, 'glob_pattern': 0.05, 'list_directory': 0.04}
+('run_bash', 'grep_search') | 278 | read_file | 0.82 | {'read_file': 0.82, 'grep_search': 0.06, 'glob_pattern': 0.05, 'list_directory': 0.06}
+('plan_task', 'list_directory') | 269 | read_file | 0.41 | {'read_file': 0.41, 'grep_search': 0.3, 'glob_pattern': 0.18, 'list_directory': 0.12}
+('run_tests', 'grep_search') | 251 | read_file | 0.81 | {'read_file': 0.81, 'grep_search': 0.06, 'glob_pattern': 0.09, 'list_directory': 0.03}
+('list_directory', 'list_directory') | 231 | read_file | 0.39 | {'read_file': 0.39, 'grep_search': 0.3, 'glob_pattern': 0.14, 'list_directory': 0.17}
+('glob_pattern', 'list_directory') | 220 | read_file | 0.39 | {'read_file': 0.39, 'grep_search': 0.35, 'glob_pattern': 0.15, 'list_directory': 0.1}
+('plan_task', 'grep_search') | 219 | grep_search | 0.40 | {'read_file': 0.37, 'grep_search': 0.4, 'glob_pattern': 0.21, 'list_directory': 0.02}
+('edit_file', 'apply_patch') | 217 | grep_search | 0.64 | {'read_file': 0.21, 'grep_search': 0.64, 'glob_pattern': 0.07, 'list_directory': 0.08}
+('ask_user', 'grep_search') | 215 | read_file | 0.43 | {'read_file': 0.43, 'grep_search': 0.36, 'glob_pattern': 0.17, 'list_directory': 0.04}
+('run_tests', 'edit_file') | 213 | read_file | 0.59 | {'read_file': 0.59, 'grep_search': 0.21, 'glob_pattern': 0.12, 'list_directory': 0.08}
+('run_bash', 'list_directory') | 213 | read_file | 0.36 | {'read_file': 0.36, 'grep_search': 0.35, 'glob_pattern': 0.15, 'list_directory': 0.14}
+('edit_file', 'run_bash') | 194 | grep_search | 0.56 | {'read_file': 0.28, 'grep_search': 0.56, 'glob_pattern': 0.08, 'list_directory': 0.08}
+('apply_patch', 'grep_search') | 191 | grep_search | 0.86 | {'read_file': 0.05, 'grep_search': 0.86, 'glob_pattern': 0.06, 'list_directory': 0.03}
+('run_bash', 'edit_file') | 183 | read_file | 0.56 | {'read_file': 0.56, 'grep_search': 0.24, 'glob_pattern': 0.1, 'list_directory': 0.09}
+('edit_file', 'read_file') | 177 | grep_search | 0.80 | {'read_file': 0.11, 'grep_search': 0.8, 'glob_pattern': 0.04, 'list_directory': 0.05}
+('read_file', 'run_bash') | 175 | grep_search | 0.79 | {'read_file': 0.13, 'grep_search': 0.79, 'glob_pattern': 0.04, 'list_directory': 0.03}
+('plan_task', 'read_file') | 163 | grep_search | 0.51 | {'read_file': 0.42, 'grep_search': 0.51, 'glob_pattern': 0.02, 'list_directory': 0.06}
+('read_file', 'ask_user') | 162 | grep_search | 0.81 | {'read_file': 0.09, 'grep_search': 0.81, 'glob_pattern': 0.04, 'list_directory': 0.06}
+('ask_user', 'plan_task') | 158 | read_file | 0.39 | {'read_file': 0.39, 'grep_search': 0.3, 'glob_pattern': 0.09, 'list_directory': 0.22}
+('glob_pattern', 'edit_file') | 149 | grep_search | 0.40 | {'read_file': 0.38, 'grep_search': 0.4, 'glob_pattern': 0.15, 'list_directory': 0.07}
+('ask_user', 'list_directory') | 148 | read_file | 0.39 | {'read_file': 0.39, 'grep_search': 0.35, 'glob_pattern': 0.16, 'list_directory': 0.11}
+('read_file', 'apply_patch') | 148 | grep_search | 0.81 | {'read_file': 0.1, 'grep_search': 0.81, 'glob_pattern': 0.07, 'list_directory': 0.02}
+('run_bash', 'read_file') | 145 | read_file | 0.75 | {'read_file': 0.75, 'grep_search': 0.16, 'glob_pattern': 0.05, 'list_directory': 0.04}
+('apply_patch', 'run_tests') | 137 | grep_search | 0.67 | {'read_file': 0.17, 'grep_search': 0.67, 'glob_pattern': 0.06, 'list_directory': 0.1}
+('apply_patch', 'apply_patch') | 130 | grep_search | 0.62 | {'read_file': 0.21, 'grep_search': 0.62, 'glob_pattern': 0.11, 'list_directory': 0.07}
+('grep_search', 'ask_user') | 128 | glob_pattern | 0.82 | {'read_file': 0.09, 'grep_search': 0.07, 'glob_pattern': 0.82, 'list_directory': 0.02}
+('apply_patch', 'lint_or_typecheck') | 128 | grep_search | 0.50 | {'read_file': 0.27, 'grep_search': 0.5, 'glob_pattern': 0.12, 'list_directory': 0.11}
+('write_file', 'run_bash') | 125 | read_file | 0.50 | {'read_file': 0.5, 'grep_search': 0.27, 'glob_pattern': 0.13, 'list_directory': 0.1}
+('edit_file', 'ask_user') | 124 | grep_search | 0.67 | {'read_file': 0.16, 'grep_search': 0.67, 'glob_pattern': 0.04, 'list_directory': 0.13}
+('write_file', 'edit_file') | 120 | read_file | 0.43 | {'read_file': 0.43, 'grep_search': 0.35, 'glob_pattern': 0.12, 'list_directory': 0.1}
+('grep_search', 'list_directory') | 120 | glob_pattern | 0.75 | {'read_file': 0.14, 'grep_search': 0.05, 'glob_pattern': 0.75, 'list_directory': 0.06}
+('run_bash', 'glob_pattern') | 119 | read_file | 0.56 | {'read_file': 0.56, 'grep_search': 0.16, 'glob_pattern': 0.04, 'list_directory': 0.24}
+('ask_user', 'glob_pattern') | 116 | read_file | 0.39 | {'read_file': 0.39, 'grep_search': 0.38, 'glob_pattern': 0.12, 'list_directory': 0.11}
+('edit_file', 'lint_or_typecheck') | 115 | grep_search | 0.57 | {'read_file': 0.3, 'grep_search': 0.57, 'glob_pattern': 0.03, 'list_directory': 0.1}
+('ask_user', 'read_file') | 114 | grep_search | 0.46 | {'read_file': 0.44, 'grep_search': 0.46, 'glob_pattern': 0.07, 'list_directory': 0.04}
+('grep_search', 'plan_task') | 111 | glob_pattern | 0.75 | {'read_file': 0.04, 'grep_search': 0.14, 'glob_pattern': 0.75, 'list_directory': 0.08}
+('grep_search', 'run_bash') | 109 | glob_pattern | 0.83 | {'read_file': 0.07, 'grep_search': 0.06, 'glob_pattern': 0.83, 'list_directory': 0.03}
+('plan_task', 'glob_pattern') | 109 | read_file | 0.37 | {'read_file': 0.37, 'grep_search': 0.34, 'glob_pattern': 0.12, 'list_directory': 0.17}
+('grep_search', 'apply_patch') | 106 | glob_pattern | 0.84 | {'read_file': 0.08, 'grep_search': 0.06, 'glob_pattern': 0.84, 'list_directory': 0.03}
+('write_file',) | 104 | read_file | 0.49 | {'read_file': 0.49, 'grep_search': 0.21, 'glob_pattern': 0.12, 'list_directory': 0.17}
+('lint_or_typecheck', 'apply_patch') | 101 | read_file | 0.49 | {'read_file': 0.49, 'grep_search': 0.32, 'glob_pattern': 0.1, 'list_directory': 0.1}

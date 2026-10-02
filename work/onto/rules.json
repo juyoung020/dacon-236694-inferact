@@ -1,0 +1,548 @@
+[
+ {
+  "pattern": "지금까지",
+  "label": "respond_only",
+  "prec": 0.99637943519189,
+  "support": 1381
+ },
+ {
+  "pattern": "여기까지",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 1353
+ },
+ {
+  "pattern": "요약해줘",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 1166
+ },
+ {
+  "pattern": "마무리하고",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 1072
+ },
+ {
+  "pattern": "summarize",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 767
+ },
+ {
+  "pattern": "진행한",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 644
+ },
+ {
+  "pattern": "작업은",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 587
+ },
+ {
+  "pattern": "오늘은",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 484
+ },
+ {
+  "pattern": "마무리하자",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 383
+ },
+ {
+  "pattern": "recap",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 366
+ },
+ {
+  "pattern": "그만하고",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 337
+ },
+ {
+  "pattern": "요약해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 331
+ },
+ {
+  "pattern": "충분한",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 319
+ },
+ {
+  "pattern": "도움이",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 303
+ },
+ {
+  "pattern": "마무리",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 261
+ },
+ {
+  "pattern": "짓자",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 260
+ },
+ {
+  "pattern": "부탁해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 254
+ },
+ {
+  "pattern": "내용과",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 189
+ },
+ {
+  "pattern": "멀쩡한거고",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 167
+ },
+ {
+  "pattern": "round",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 156
+ },
+ {
+  "pattern": "됐어요",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 133
+ },
+ {
+  "pattern": "확인한",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 120
+ },
+ {
+  "pattern": "볼",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 119
+ },
+ {
+  "pattern": "핵심만",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 110
+ },
+ {
+  "pattern": "brief하게",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 107
+ },
+ {
+  "pattern": "이만",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 75
+ },
+ {
+  "pattern": "해주시면",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 69
+ },
+ {
+  "pattern": "명확해졌네.",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 55
+ },
+ {
+  "pattern": "이 정도면",
+  "label": "respond_only",
+  "prec": 0.996031746031746,
+  "support": 504
+ },
+ {
+  "pattern": "we did",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 444
+ },
+ {
+  "pattern": "enough for",
+  "label": "respond_only",
+  "prec": 0.9971830985915493,
+  "support": 355
+ },
+ {
+  "pattern": "s wrap",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 311
+ },
+ {
+  "pattern": "하고 정리",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 303
+ },
+ {
+  "pattern": "거 정리해줘",
+  "label": "respond_only",
+  "prec": 0.9962264150943396,
+  "support": 265
+ },
+ {
+  "pattern": "쪽은 이제",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 251
+ },
+ {
+  "pattern": "이제 됐고",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 251
+ },
+ {
+  "pattern": "해주면 될",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 248
+ },
+ {
+  "pattern": "정리만 해주면",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 248
+ },
+ {
+  "pattern": "한번 정리해줄래",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 248
+ },
+ {
+  "pattern": "s enough",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 208
+ },
+ {
+  "pattern": "wrap up",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 206
+ },
+ {
+  "pattern": "re done",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 202
+ },
+ {
+  "pattern": "good enough",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 190
+ },
+ {
+  "pattern": "for today",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 187
+ },
+ {
+  "pattern": "stop here",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 186
+ },
+ {
+  "pattern": "is good",
+  "label": "respond_only",
+  "prec": 0.994535519125683,
+  "support": 183
+ },
+ {
+  "pattern": "쪽 이",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 177
+ },
+ {
+  "pattern": "ignore 문제겠네.",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 167
+ },
+ {
+  "pattern": "문제겠네. 일단",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 167
+ },
+ {
+  "pattern": "루트 맞대.",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 167
+ },
+ {
+  "pattern": "i needed",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 157
+ },
+ {
+  "pattern": "today wrap",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 156
+ },
+ {
+  "pattern": "helped can",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 148
+ },
+ {
+  "pattern": "got through",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 148
+ },
+ {
+  "pattern": "this really",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 148
+ },
+ {
+  "pattern": "really helped",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 148
+ },
+ {
+  "pattern": "up give",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 145
+ },
+ {
+  "pattern": "s stop",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 143
+ },
+ {
+  "pattern": "here just",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 143
+ },
+ {
+  "pattern": "하고 정리해줘",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 133
+ },
+ {
+  "pattern": "새로 만들어줘",
+  "label": "write_file",
+  "prec": 0.9907407407407407,
+  "support": 108
+ },
+ {
+  "pattern": "엔드포인트 변경",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 107
+ },
+ {
+  "pattern": "깔끔하다. 자",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 107
+ },
+ {
+  "pattern": "정도면 됐어",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 100
+ },
+ {
+  "pattern": "남은 부분을",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 83
+ },
+ {
+  "pattern": "부분을 나중에",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 83
+ },
+ {
+  "pattern": "나중에 이어서",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 83
+ },
+ {
+  "pattern": "하고 정리해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 72
+ },
+ {
+  "pattern": "이 정도로",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 71
+ },
+ {
+  "pattern": "쪽은 이",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 70
+ },
+ {
+  "pattern": "애매한 부분을",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 70
+ },
+ {
+  "pattern": "구분해서 정리해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 70
+ },
+ {
+  "pattern": "부분을 구분해서",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 70
+ },
+ {
+  "pattern": "아직 애매한",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 70
+ },
+ {
+  "pattern": "거 정리해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 61
+ },
+ {
+  "pattern": "파악한 거",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 56
+ },
+ {
+  "pattern": "정리해 주실래요",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 55
+ },
+ {
+  "pattern": "한번 정리해",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 55
+ },
+ {
+  "pattern": "오늘 한",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 52
+ },
+ {
+  "pattern": "될 것 같아",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 492
+ },
+ {
+  "pattern": "wrap it up",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 332
+ },
+ {
+  "pattern": "하면 될 것",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 246
+ },
+ {
+  "pattern": "me a quick",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 168
+ },
+ {
+  "pattern": "for what i",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 156
+ },
+ {
+  "pattern": "think we re",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 154
+ },
+ {
+  "pattern": "what we got",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 148
+ },
+ {
+  "pattern": "새 파일 하나",
+  "label": "write_file",
+  "prec": 1.0,
+  "support": 76
+ },
+ {
+  "pattern": "될 것 같아요",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 69
+ },
+ {
+  "pattern": "새로 하나 만들어줘",
+  "label": "write_file",
+  "prec": 1.0,
+  "support": 64
+ },
+ {
+  "pattern": "파일 하나 만들어줘",
+  "label": "write_file",
+  "prec": 1.0,
+  "support": 57
+ },
+ {
+  "pattern": "단계가 빠진 거다.",
+  "label": "respond_only",
+  "prec": 1.0,
+  "support": 55
+ }
+]
