@@ -22,7 +22,8 @@ T4 GPU 1장, 오프라인, 추론 10분, 제출물 1GB라는 제약 안에서 �
 
 출처: [DACON 리더보드 Private 탭](https://dacon.io/competitions/official/236694/leaderboard)
 
-대회 기간 중 Public LB 변화는 아래와 같습니다. (7월 8일까지의 기록이며, 이후 7월 15일 마감까지의 제출은 이 저장소에 기록되어 있지 않습니다.)
+이 대회는 Private 점수가 예선 종료 시점의 Public 점수와 같아, 최종 제출의 Public 점수(0.7934409992)가 그대로 최종 순위 점수가 되었습니다.
+대회 기간 중 Public LB 변화는 아래와 같습니다.
 
 | 단계 | Public LB | 바뀐 점 |
 |---|---:|---|
@@ -32,7 +33,10 @@ T4 GPU 1장, 오프라인, 추론 10분, 제출물 1GB라는 제약 안에서 �
 | v8 | 0.7697 | 전체 문맥 e5 파인튜닝 + 코렉터(행동 인자·순서 스택) |
 | 메타 | 0.7746 | **모델이 버리던 세션 메타정보(열린 파일 등) 활용** |
 | 하드 라우팅 | 0.7802 | **그룹 확률을 곱하던 구조 → 그룹을 확정하고 그 안에서만 분류** |
-| 07-08 | **0.7858** | au 전용 한국어 e5-base (어휘 프루닝으로 552MB → 201MB) |
+| 07-08 | 0.7858 | au 전용 모델을 multilingual-e5-base로 교체 (어휘 프루닝으로 552MB → 201MB) |
+| **07-15 최종 제출** | **0.79344** | **코렉터에 신호 두 가지를 더 스택**: 직전 검색 결과의 숫자(매치·파일·줄·항목 수)와 세션 메타 상호작용(토큰 예산×턴 등)을 au·전체 모델 확률과 함께 넣음. 직전 검색 결과가 탐색 그룹의 다음 행동 선택을 보강. held-out CV 0.7757 → 0.7780. 추론 7분 32초 |
+
+> 최종 제출(07-15)의 코드는 이 저장소에 포함되어 있지 않습니다. 저장소의 코드는 07-08 기준(Public 0.7858)이며, 최종 제출은 그 위에 위 코렉터 피처를 추가한 것입니다.
 
 - 하드 라우팅 버전 기준 추론 4분 26초 / 600초, 제출물 747MB / 1GB
 
@@ -108,7 +112,7 @@ train.jsonl ─► build_graph.py   겹치는 이력 윈도우를 이어 붙여 
                   ▼
            코렉터  행동 인자·순서·세션 메타를 스택한 HGB (corrector.py, meta_feats.py)
                   ▼
-           au 행만  au 전용 한국어 e5-base 재블렌드 (ft_au.py, 어휘 프루닝)
+           au 행만  au 전용 multilingual-e5-base 재블렌드 (ft_au.py, 어휘 프루닝)
                   ▼
            클래스별 오프셋 (Macro-F1 직접 최적화) ─► submission.csv
 ```
@@ -160,7 +164,7 @@ powershell -ExecutionPolicy Bypass -File work\onto\reproduce.ps1
 ```
 
 `reproduce.ps1` 은 타임라인 복원 → 임베딩 캐시 → 규칙 마이닝 → 3-fold OOF → au 파인튜닝 → 전체 학습 → 패키징·모의 채점까지 한 번에 실행하고 `work/onto/submit.zip` 을 만듭니다.
-사전학습 모델은 [`dragonkue/multilingual-e5-small-ko-v2`](https://huggingface.co/dragonkue/multilingual-e5-small-ko-v2) (MIT) 를 씁니다.
+사전학습 모델은 [`dragonkue/multilingual-e5-small-ko-v2`](https://huggingface.co/dragonkue/multilingual-e5-small-ko-v2) 와 [`intfloat/multilingual-e5-base`](https://huggingface.co/intfloat/multilingual-e5-base) (둘 다 MIT) 를 쓰고, 외부 데이터는 쓰지 않았습니다. e5-base 는 `FT_MODEL` 환경 변수로 지정합니다.
 
 ## 구조
 
